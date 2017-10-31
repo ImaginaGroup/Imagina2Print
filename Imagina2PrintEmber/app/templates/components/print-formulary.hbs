@@ -1,0 +1,58 @@
+{{yield}}
+<div>
+  <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" {{action "hacerPeticion"}}>Imprimir</button>
+</div>
+<div id="myModal" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+        <div class="modal-header">
+          <div class="container">
+            <h2>Imprimir</h2>
+            <form class="form-horizontal" action="/action_page.php">
+              <div class="form-group">
+                <label class="control-label col-sm-2" >Color:</label>
+                <div class="col-sm-10">
+                  <select class="selectpicker">
+                    <option>{{respuesta.color.[1]}}</option>
+                    <option>{{respuesta.color.[0]}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" >Tamaño:</label>
+                <div class="col-sm-10">
+                  <select class="selectpicker">
+                    <option>{{respuesta.tamano.[0]}}</option>
+                    <option>{{respuesta.tamano.[1]}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" >Configuración:</label>
+                <div class="col-sm-10">
+                  <select class="selectpicker">
+                    <option>{{respuesta.configuracion.[0]}}</option>
+                    <option>{{respuesta.color.[1]}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="control-label col-sm-2" >Márgenes:</label>
+                <div class="col-sm-10">
+                  <select class="selectpicker">
+                    <option>{{respuesta.margenes.[0]}}</option>
+                    <option>{{respuesta.margenes.[1]}}</option>
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-sm-offset-2 col-sm-10">
+                  <button type="submit" class="btn btn-default" {{action "print"}}>Imprimir</button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+  </div>
+</div>

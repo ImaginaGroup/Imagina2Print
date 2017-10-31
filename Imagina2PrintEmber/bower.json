@@ -1,0 +1,6 @@
+{
+  "name": "imagina2-print",
+  "dependencies": {
+    "dropzone": "^4.2.0"
+  }
+}
