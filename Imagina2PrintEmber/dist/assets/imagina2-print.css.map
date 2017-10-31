@@ -3,9 +3,9 @@
 	"file": "imagina2-print.css",
 	"sourceRoot": "/Users/Sergio/Documents/DEV/Imagina2Print/Imagina2PrintEmber/app/styles",
 	"sources": [
-		"../../sass_compiler-input_base_path-N2iNFutG.tmp/app/styles/app.scss",
-		"../../sass_compiler-input_base_path-N2iNFutG.tmp/app/styles/ember-modal-dialog/ember-modal-structure.scss",
-		"../../sass_compiler-input_base_path-N2iNFutG.tmp/app/styles/ember-modal-dialog/ember-modal-appearance.scss"
+		"../../sass_compiler-input_base_path-oHoUd8OU.tmp/app/styles/app.scss",
+		"../../sass_compiler-input_base_path-oHoUd8OU.tmp/app/styles/ember-modal-dialog/ember-modal-structure.scss",
+		"../../sass_compiler-input_base_path-oHoUd8OU.tmp/app/styles/ember-modal-dialog/ember-modal-appearance.scss"
 	],
 	"sourcesContent": [
 		"@import \"ember-modal-dialog/ember-modal-structure\";\n@import \"ember-modal-dialog/ember-modal-appearance\";\n\n#canvas {\n  width: 100%;\n  border:1px solid #d3d3d3;\n  height: auto;\n}\n\n.btn {\n  margin-left: 45%;\n  margin-top: 20px;\n  margin-bottom: 20px;\n}\n\n#title {\n  margin-left: 40%;\n  margin-bottom: 20px;\n}\n\n#drag-and-drop {\n  margin: auto;\n  margin-left: 200px;\n  margin-right: 200px\n}\n",

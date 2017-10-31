@@ -1,10 +1,15 @@
 import Component from '@ember/component';
 
+var imagen = new Image();
+
+
 export default Component.extend({
   actions: {
-    cambiarColor() {
+
+    cambiarSinColor() {
       var canvas =document.getElementById("canvas");
       var ctx=canvas.getContext("2d");
+      imagen = ctx.getImageData(0, 0, canvas.width, canvas.height);
       var imgPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
       console.log(imgPixels);
       for(var y = 0; y < imgPixels.height; y++){
@@ -17,6 +22,11 @@ export default Component.extend({
         }
       }
       ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
+    },
+    cambiarAColor() {
+      var canvas =document.getElementById("canvas");
+      var ctx=canvas.getContext("2d");
+      ctx.putImageData(imagen, 0, 0, 0, 0, canvas.width, canvas.height);
     }
   },
 });

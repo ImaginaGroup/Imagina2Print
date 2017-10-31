@@ -19,18 +19,47 @@ export default Component.extend({
     },
     print() {
       this.send('guardarEstado');
+      this.send('comprobarDisponibilidad');
     },
     guardarEstado() {
-      var store = this.get('store');
-      console.log(store);
-      var opcion = store.findAll('option');
-      console.log(opcion);
-      /*store.createRecord('post', {
-        color: 'Rails is Omakase',
-        tamano: 'Lorem ipsum',
-        configuracion: 'asf',
-        margenes: 'asdf'
-      }).save();*/
+
+    },
+    comprobarDisponibilidad() {
+      var valor= 1;
+      var imprimiendo=false;
+      var myVar2 = setInterval(function(){
+        if (imprimiendo==true) {
+          console.log("ocupado");
+        }
+        if (imprimiendo==false) {
+          console.log("Listo para imprimir");
+        }
+      },3000);
+      var myVar= setInterval(function(){
+        imprimiendo=true;
+
+         switch (valor) {
+           case 1: console.log("Imprimiendo... 1");
+
+            valor=2;
+             break;
+           case 2: console.log("Imprimiendo... 2");
+
+            valor=3;
+             break;
+           case 3: console.log("Imprimiendo... 3");
+
+            pararImpresion();
+             break;
+
+         }
+
+      }, 2000);
+
+      function pararImpresion() {
+        imprimiendo=false
+        clearInterval(myVar);
+      }
     }
   }
 });

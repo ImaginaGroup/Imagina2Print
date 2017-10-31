@@ -36,11 +36,16 @@ define("imagina2-print/components/canvas-component", ["exports"], function (expo
     value: true
   });
   var Component = Ember.Component;
+
+
+  var imagen = new Image();
+
   exports.default = Component.extend({
     actions: {
-      cambiarColor: function cambiarColor() {
+      cambiarSinColor: function cambiarSinColor() {
         var canvas = document.getElementById("canvas");
         var ctx = canvas.getContext("2d");
+        imagen = ctx.getImageData(0, 0, canvas.width, canvas.height);
         var imgPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
         console.log(imgPixels);
         for (var y = 0; y < imgPixels.height; y++) {
@@ -53,6 +58,11 @@ define("imagina2-print/components/canvas-component", ["exports"], function (expo
           }
         }
         ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
+      },
+      cambiarAColor: function cambiarAColor() {
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        ctx.putImageData(imagen, 0, 0, 0, 0, canvas.width, canvas.height);
       }
     }
   });
@@ -353,18 +363,47 @@ define('imagina2-print/components/print-formulary', ['exports'], function (expor
       },
       print: function print() {
         this.send('guardarEstado');
+        this.send('comprobarDisponibilidad');
       },
-      guardarEstado: function guardarEstado() {
-        var store = this.get('store');
-        console.log(store);
-        var opcion = store.findAll('option');
-        console.log(opcion);
-        /*store.createRecord('post', {
-          color: 'Rails is Omakase',
-          tamano: 'Lorem ipsum',
-          configuracion: 'asf',
-          margenes: 'asdf'
-        }).save();*/
+      guardarEstado: function guardarEstado() {},
+      comprobarDisponibilidad: function comprobarDisponibilidad() {
+        var valor = 1;
+        var imprimiendo = false;
+        var myVar2 = setInterval(function () {
+          if (imprimiendo == true) {
+            console.log("ocupado");
+          }
+          if (imprimiendo == false) {
+            console.log("Listo para imprimir");
+          }
+        }, 3000);
+        var myVar = setInterval(function () {
+          imprimiendo = true;
+
+          switch (valor) {
+            case 1:
+              console.log("Imprimiendo... 1");
+
+              valor = 2;
+              break;
+            case 2:
+              console.log("Imprimiendo... 2");
+
+              valor = 3;
+              break;
+            case 3:
+              console.log("Imprimiendo... 3");
+
+              pararImpresion();
+              break;
+
+          }
+        }, 2000);
+
+        function pararImpresion() {
+          imprimiendo = false;
+          clearInterval(myVar);
+        }
       }
     }
   });
@@ -759,7 +798,7 @@ define("imagina2-print/templates/components/canvas-component", ["exports"], func
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "2ClqtMKZ", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"canvas\"],[9,\"id\",\"canvas\"],[9,\"width\",\"300\"],[9,\"height\",\"300\"],[7],[0,\"\\n    Sorry, your browser doesn't support the <canvas> element.\\n\"],[8],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarColor\"]],[7],[0,\"Blanco y negro\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/canvas-component.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "trdg+wgB", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"canvas\"],[9,\"id\",\"canvas\"],[9,\"width\",\"300\"],[9,\"height\",\"300\"],[7],[0,\"\\n    Sorry, your browser doesn't support the <canvas> element.\\n\"],[8],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarSinColor\"]],[7],[0,\"Blanco y negro\"],[8],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarAColor\"]],[7],[0,\"Color\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/canvas-component.hbs" } });
 });
 define("imagina2-print/templates/components/componente-nuevo", ["exports"], function (exports) {
   "use strict";
