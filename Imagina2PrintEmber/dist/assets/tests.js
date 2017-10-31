@@ -17,7 +17,7 @@ define('imagina2-print/tests/app.lint-test', [], function () {
 
   QUnit.test('components/canvas-component.js', function (assert) {
     assert.expect(1);
-    assert.ok(true, 'components/canvas-component.js should pass ESLint\n\n');
+    assert.ok(false, 'components/canvas-component.js should pass ESLint\n\n9:7 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('components/drag-and-drop.js', function (assert) {

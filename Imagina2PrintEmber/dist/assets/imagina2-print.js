@@ -29,15 +29,32 @@ define('imagina2-print/app', ['exports', 'imagina2-print/resolver', 'ember-load-
 
   exports.default = App;
 });
-define('imagina2-print/components/canvas-component', ['exports'], function (exports) {
-  'use strict';
+define("imagina2-print/components/canvas-component", ["exports"], function (exports) {
+  "use strict";
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
   var Component = Ember.Component;
   exports.default = Component.extend({
-    actions: {}
+    actions: {
+      cambiarColor: function cambiarColor() {
+        var canvas = document.getElementById("canvas");
+        var ctx = canvas.getContext("2d");
+        var imgPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
+        console.log(imgPixels);
+        for (var y = 0; y < imgPixels.height; y++) {
+          for (var x = 0; x < imgPixels.width; x++) {
+            var i = y * 4 * imgPixels.width + x * 4;
+            var avg = (imgPixels.data[i] + imgPixels.data[i + 1] + imgPixels.data[i + 2]) / 3;
+            imgPixels.data[i] = avg;
+            imgPixels.data[i + 1] = avg;
+            imgPixels.data[i + 2] = avg;
+          }
+        }
+        ctx.putImageData(imgPixels, 0, 0, 0, 0, imgPixels.width, imgPixels.height);
+      }
+    }
   });
 });
 define('imagina2-print/components/default-message', ['exports', 'ui-dropzone/components/default-message'], function (exports, _defaultMessage) {
@@ -742,7 +759,7 @@ define("imagina2-print/templates/components/canvas-component", ["exports"], func
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "t69Nt/4J", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"canvas\"],[9,\"id\",\"canvas\"],[9,\"width\",\"300\"],[9,\"height\",\"300\"],[7],[0,\"\\n    Sorry, your browser doesn't support the <canvas> element.\\n\"],[8],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarColor()\"]],[7],[0,\"Blanco y negro\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/canvas-component.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "2ClqtMKZ", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"canvas\"],[9,\"id\",\"canvas\"],[9,\"width\",\"300\"],[9,\"height\",\"300\"],[7],[0,\"\\n    Sorry, your browser doesn't support the <canvas> element.\\n\"],[8],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarColor\"]],[7],[0,\"Blanco y negro\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/canvas-component.hbs" } });
 });
 define("imagina2-print/templates/components/componente-nuevo", ["exports"], function (exports) {
   "use strict";
