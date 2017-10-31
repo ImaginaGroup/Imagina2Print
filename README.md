@@ -17,12 +17,23 @@ You will need the following things properly installed on your computer.
 * `git clone <repository-url>` this repository
 * `cd Imagina2Print`
 * `npm install`
+* `cd Imagina2PrintEmber`
+* `npm install`
 
-## Running / Development
+## Deploy changes
 
-* `ember serve`
+* `ember build --environment=production --output-path=../public/`
+
+## Running / Development in Ember
+
+* `ember serve` or `ember server --proxy http://127.0.0.1:3000`
 * Visit your app at [http://localhost:4200](http://localhost:4200).
 * Visit your tests at [http://localhost:4200/tests](http://localhost:4200/tests).
+
+## Running / Development in Node
+
+* `node server`
+* Visit your app at [http://localhost:3000](http://localhost:3000).
 
 ### Code Generators
 
