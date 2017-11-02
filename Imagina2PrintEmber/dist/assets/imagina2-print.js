@@ -367,6 +367,26 @@ define('imagina2-print/components/print-formulary', ['exports'], function (expor
       },
       guardarEstado: function guardarEstado() {},
       comprobarDisponibilidad: function comprobarDisponibilidad() {
+
+        HTMLElement.prototype.hasClass = function (className) {
+          var rgx = new RegExp('(\\s|^)' + className + '(\\s|$)');
+          var match = this.className.match(rgx);
+          return match != null;
+        };
+        HTMLElement.prototype.removeClass = function (className) {
+          if (this.hasClass(className)) {
+            var reg = new RegExp('(\\s|^)' + className + '(\\s|$)');
+            this.className = this.className.replace(reg, ' ');
+          }
+        };
+        HTMLElement.prototype.addClass = function (className) {
+          if (!this.hasClass(className)) this.className += " " + className;
+        };
+        document.getElementsByClassName('progress')[0].style.display = "block";
+        document.getElementsByClassName('progress-bar')[0].style.width = 0 + "%";
+        document.getElementsByClassName('progress-bar')[0].innerText = "";
+        document.getElementsByClassName('progress-bar')[0].style.backgroundColor = "#337ab7";
+        document.getElementsByClassName('progress-bar')[0].addClass("active");
         var valor = 1;
         var imprimiendo = false;
         var myVar2 = setInterval(function () {
@@ -378,22 +398,34 @@ define('imagina2-print/components/print-formulary', ['exports'], function (expor
           }
         }, 3000);
         var myVar = setInterval(function () {
+
           imprimiendo = true;
 
           switch (valor) {
             case 1:
               console.log("Imprimiendo... 1");
-
+              document.getElementsByClassName('progress-bar')[0].style.width = 20 + "%";
+              document.getElementsByClassName('progress-bar')[0].innerText = "Imprimiendo";
               valor = 2;
               break;
             case 2:
               console.log("Imprimiendo... 2");
-
+              document.getElementsByClassName('progress-bar')[0].style.width = 40 + "%";
               valor = 3;
               break;
             case 3:
               console.log("Imprimiendo... 3");
-
+              document.getElementsByClassName('progress-bar')[0].style.width = 60 + "%";
+              valor = 4;
+              break;
+            case 4:
+              console.log("Imprimiendo... 3");
+              document.getElementsByClassName('progress-bar')[0].style.width = 80 + "%";
+              valor = 5;
+              break;
+            case 5:
+              console.log("Imprimiendo... 3");
+              document.getElementsByClassName('progress-bar')[0].style.width = 100 + "%";
               pararImpresion();
               break;
 
@@ -403,6 +435,13 @@ define('imagina2-print/components/print-formulary', ['exports'], function (expor
         function pararImpresion() {
           imprimiendo = false;
           clearInterval(myVar);
+          clearInterval(myVar2);
+          setTimeout(function () {
+            document.getElementsByClassName('progress-bar')[0].style.backgroundColor = "#6ae24f";
+            document.getElementsByClassName('progress-bar')[0].innerText = "Documento impreso";
+
+            document.getElementsByClassName('progress-bar')[0].removeClass('active');
+          }, 1000);
         }
       }
     }
@@ -790,7 +829,7 @@ define("imagina2-print/templates/application", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "zbkqTDdK", "block": "{\"symbols\":[],\"statements\":[[2,\" Latest compiled and minified CSS \"],[0,\"\\n\"],[6,\"link\"],[9,\"rel\",\"stylesheet\"],[9,\"href\",\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css\"],[9,\"integrity\",\"sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb\"],[9,\"crossorigin\",\"anonymous\"],[7],[8],[0,\"\\n\"],[6,\"meta\"],[9,\"name\",\"viewport\"],[9,\"content\",\"width=device-width, initial-scale=1\"],[7],[8],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://code.jquery.com/jquery-3.2.1.slim.min.js\"],[9,\"integrity\",\"sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN\"],[9,\"crossorigin\",\"anonymous\"],[7],[8],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.3/umd/popper.min.js\"],[9,\"integrity\",\"sha384-vFJXuSJphROIrBnz7yo7oB41mKfc8JzQZiCq4NCceLEaO4IHwicKwpJf9c9IpFgh\"],[9,\"crossorigin\",\"anonymous\"],[7],[8],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/js/bootstrap.min.js\"],[9,\"integrity\",\"sha384-alpBpkh1PFOepccYVYDB4do5UnbKysX5WZXm3XxPqe5iKTfUKjNkCk9SaVuEZflJ\"],[9,\"crossorigin\",\"anonymous\"],[7],[8],[0,\"\\n\\n\"],[1,[18,\"componente-nuevo\"],false],[0,\"\\n\\n\"],[0,\"\\n\"],[1,[18,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/application.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "ktA7FQGg", "block": "{\"symbols\":[],\"statements\":[[2,\" Latest compiled and minified CSS \"],[0,\"\\n\"],[6,\"link\"],[9,\"rel\",\"stylesheet\"],[9,\"href\",\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"],[7],[8],[0,\"\\n\\n\"],[2,\" jQuery library \"],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"],[7],[8],[0,\"\\n\\n\"],[2,\" Latest compiled JavaScript \"],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"],[7],[8],[0,\"\\n\\n\"],[1,[18,\"componente-nuevo\"],false],[0,\"\\n\\n\"],[0,\"\\n\"],[1,[18,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/application.hbs" } });
 });
 define("imagina2-print/templates/components/canvas-component", ["exports"], function (exports) {
   "use strict";
@@ -798,7 +837,7 @@ define("imagina2-print/templates/components/canvas-component", ["exports"], func
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "trdg+wgB", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"canvas\"],[9,\"id\",\"canvas\"],[9,\"width\",\"300\"],[9,\"height\",\"300\"],[7],[0,\"\\n    Sorry, your browser doesn't support the <canvas> element.\\n\"],[8],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarSinColor\"]],[7],[0,\"Blanco y negro\"],[8],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarAColor\"]],[7],[0,\"Color\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/canvas-component.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "iuRNCyz1", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"canvas\"],[9,\"id\",\"canvas\"],[7],[0,\"\\n    Sorry, your browser doesn't support the <canvas> element.\\n\"],[8],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarSinColor\"]],[7],[0,\"Blanco y negro\"],[8],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarAColor\"]],[7],[0,\"Color\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/canvas-component.hbs" } });
 });
 define("imagina2-print/templates/components/componente-nuevo", ["exports"], function (exports) {
   "use strict";
@@ -838,7 +877,7 @@ define("imagina2-print/templates/components/print-formulary", ["exports"], funct
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "Q+WAgCce", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n  \"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal\"],[3,\"action\",[[19,0,[]],\"hacerPeticion\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[6,\"div\"],[9,\"id\",\"myModal\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n  \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"modal-header\"],[7],[0,\"\\n          \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n            \"],[6,\"h2\"],[7],[0,\"Imprimir\"],[8],[0,\"\\n            \"],[6,\"form\"],[9,\"class\",\"form-horizontal\"],[9,\"action\",\"/action_page.php\"],[7],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Color:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-10\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"selectpicker\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"1\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"0\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Tamaño:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-10\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"selectpicker\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"0\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"1\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Configuración:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-10\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"selectpicker\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"configuracion\",\"0\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"1\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Márgenes:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-10\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"selectpicker\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"0\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"1\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-offset-2 col-sm-10\"],[7],[0,\"\\n                  \"],[6,\"button\"],[9,\"type\",\"submit\"],[9,\"class\",\"btn btn-default\"],[3,\"action\",[[19,0,[]],\"print\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n            \"],[8],[0,\"\\n          \"],[8],[0,\"\\n        \"],[8],[0,\"\\n      \"],[8],[0,\"\\n  \"],[8],[0,\"\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/print-formulary.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "oDUPCtbb", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[9,\"class\",\"text-center\"],[7],[0,\"\\n  \"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal\"],[3,\"action\",[[19,0,[]],\"hacerPeticion\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[6,\"div\"],[9,\"id\",\"myModal\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n  \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n\\n        \"],[6,\"div\"],[9,\"class\",\"modal-body\"],[7],[0,\"\\n          \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"text-center col-sm-6\"],[7],[0,\"\\n              \"],[6,\"h2\"],[7],[0,\"Imprimir\"],[8],[0,\"\\n            \"],[8],[0,\"\\n          \"],[8],[0,\"\\n        \"],[8],[0,\"\\n\\n          \"],[6,\"div\"],[9,\"class\",\"modal-header\"],[7],[0,\"\\n          \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n            \"],[6,\"form\"],[9,\"class\",\"form-horizontal \"],[9,\"action\",\"/action_page.php\"],[7],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Color:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"1\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"0\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Tamaño:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"0\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"1\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Config:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"configuracion\",\"0\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"1\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Márgenes:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"0\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"1\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group col-sm-6 text-center\"],[7],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"\"],[7],[0,\"\\n                  \"],[6,\"button\"],[9,\"type\",\"submit\"],[9,\"class\",\"btn btn-default \"],[9,\"data-dismiss\",\"modal\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal2\"],[3,\"action\",[[19,0,[]],\"print\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n\\n\\n            \"],[8],[0,\"\\n          \"],[8],[0,\"\\n\\n\\n\\n\\n\\n      \"],[8],[0,\"\\n    \"],[8],[0,\"\\n  \"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[6,\"div\"],[9,\"id\",\"myModal2\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n  \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n      \"],[6,\"div\"],[9,\"class\",\"header\"],[7],[0,\"\\n\\n      \"],[8],[0,\"\\n      \"],[6,\"div\"],[9,\"class\",\"modal-body\"],[7],[0,\"\\n\\n          \"],[6,\"div\"],[9,\"class\",\"progress\"],[9,\"style\",\"display: none;\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"progress-bar progress-bar-striped active\"],[9,\"role\",\"progressbar\"],[9,\"aria-valuenow\",\"70\"],[9,\"style\",\"width: 70%;\"],[9,\"aria-valuemin\",\"0\"],[9,\"aria-valuemax\",\"100\"],[7],[0,\"\\n\\n            \"],[8],[0,\"\\n          \"],[8],[0,\"\\n\\n      \"],[8],[0,\"\\n    \"],[8],[0,\"\\n  \"],[8],[0,\"\\n\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/print-formulary.hbs" } });
 });
 define("imagina2-print/templates/options", ["exports"], function (exports) {
   "use strict";
@@ -870,6 +909,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("imagina2-print/app")["default"].create({"name":"imagina2-print","version":"0.0.0+6e294183"});
+  require("imagina2-print/app")["default"].create({"name":"imagina2-print","version":"0.0.0+34d87241"});
 }
 //# sourceMappingURL=imagina2-print.map

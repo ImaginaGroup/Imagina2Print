@@ -1,18 +1,26 @@
 {{yield}}
-<div>
+<div class="text-center">
   <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" {{action "hacerPeticion"}}>Imprimir</button>
 </div>
 <div id="myModal" class="modal fade" role="dialog">
   <div class="modal-dialog">
     <div class="modal-content">
-        <div class="modal-header">
+
+        <div class="modal-body">
           <div class="container">
-            <h2>Imprimir</h2>
-            <form class="form-horizontal" action="/action_page.php">
+            <div class="text-center col-sm-6">
+              <h2>Imprimir</h2>
+            </div>
+          </div>
+        </div>
+
+          <div class="modal-header">
+          <div class="container">
+            <form class="form-horizontal " action="/action_page.php">
               <div class="form-group">
                 <label class="control-label col-sm-2" >Color:</label>
-                <div class="col-sm-10">
-                  <select class="selectpicker">
+                <div class="col-sm-3">
+                  <select class="form-control">
                     <option>{{respuesta.color.[1]}}</option>
                     <option>{{respuesta.color.[0]}}</option>
                   </select>
@@ -20,17 +28,17 @@
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-2" >Tamaño:</label>
-                <div class="col-sm-10">
-                  <select class="selectpicker">
+                <div class="col-sm-3">
+                  <select class="form-control">
                     <option>{{respuesta.tamano.[0]}}</option>
                     <option>{{respuesta.tamano.[1]}}</option>
                   </select>
                 </div>
               </div>
               <div class="form-group">
-                <label class="control-label col-sm-2" >Configuración:</label>
-                <div class="col-sm-10">
-                  <select class="selectpicker">
+                <label class="control-label col-sm-2" >Config:</label>
+                <div class="col-sm-3">
+                  <select class="form-control">
                     <option>{{respuesta.configuracion.[0]}}</option>
                     <option>{{respuesta.color.[1]}}</option>
                   </select>
@@ -38,21 +46,47 @@
               </div>
               <div class="form-group">
                 <label class="control-label col-sm-2" >Márgenes:</label>
-                <div class="col-sm-10">
-                  <select class="selectpicker">
+                <div class="col-sm-3">
+                  <select class="form-control">
                     <option>{{respuesta.margenes.[0]}}</option>
                     <option>{{respuesta.margenes.[1]}}</option>
                   </select>
                 </div>
               </div>
-              <div class="form-group">
-                <div class="col-sm-offset-2 col-sm-10">
-                  <button type="submit" class="btn btn-default" {{action "print"}}>Imprimir</button>
+              <div class="form-group col-sm-6 text-center">
+                <div class="">
+                  <button type="submit" class="btn btn-default " data-dismiss="modal" data-toggle="modal" data-target="#myModal2" {{action "print"}}>Imprimir</button>
                 </div>
               </div>
+
+
             </form>
           </div>
-        </div>
+
+
+
+
+
       </div>
+    </div>
   </div>
+</div>
+<div id="myModal2" class="modal fade" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="header">
+
+      </div>
+      <div class="modal-body">
+
+          <div class="progress" style="display: none;">
+            <div class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="70" style="width: 70%;" aria-valuemin="0" aria-valuemax="100">
+
+            </div>
+          </div>
+
+      </div>
+    </div>
+  </div>
+
 </div>

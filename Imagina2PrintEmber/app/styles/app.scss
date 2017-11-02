@@ -2,17 +2,14 @@
 @import "ember-modal-dialog/ember-modal-appearance";
 
 #canvas {
-  width: 100%;
+
   border:1px solid #d3d3d3;
-  height: auto;
+
 }
 
-.btn {
-  margin-left: 45%;
-  margin-top: 20px;
-  margin-bottom: 20px;
+.modal-body{
+  font-size: 1.2em;
 }
-
 #title {
   margin-left: 40%;
   margin-bottom: 20px;

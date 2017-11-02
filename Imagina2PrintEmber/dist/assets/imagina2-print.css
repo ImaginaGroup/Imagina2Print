@@ -46,14 +46,10 @@
   background-color: rgba(128, 128, 128, 0.77); }
 
 #canvas {
-  width: 100%;
-  border: 1px solid #d3d3d3;
-  height: auto; }
+  border: 1px solid #d3d3d3; }
 
-.btn {
-  margin-left: 45%;
-  margin-top: 20px;
-  margin-bottom: 20px; }
+.modal-body {
+  font-size: 1.2em; }
 
 #title {
   margin-left: 40%;
