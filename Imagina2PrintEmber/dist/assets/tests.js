@@ -5,11 +5,6 @@ define('imagina2-print/tests/app.lint-test', [], function () {
 
   QUnit.module('ESLint | app');
 
-  QUnit.test('adapters/application.js', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'adapters/application.js should pass ESLint\n\n');
-  });
-
   QUnit.test('app.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'app.js should pass ESLint\n\n');
@@ -25,14 +20,9 @@ define('imagina2-print/tests/app.lint-test', [], function () {
     assert.ok(false, 'components/drag-and-drop.js should pass ESLint\n\n7:1 - \'Dropzone\' is not defined. (no-undef)\n25:39 - \'file\' is defined but never used. (no-unused-vars)');
   });
 
-  QUnit.test('components/print-formulary.js', function (assert) {
+  QUnit.test('controllers/application.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/print-formulary.js should pass ESLint\n\n5:10 - \'Ember\' is not defined. (no-undef)\n53:11 - Unexpected console statement. (no-console)\n56:11 - Unexpected console statement. (no-console)\n65:19 - Unexpected console statement. (no-console)\n70:19 - Unexpected console statement. (no-console)\n74:19 - Unexpected console statement. (no-console)\n78:19 - Unexpected console statement. (no-console)\n82:19 - Unexpected console statement. (no-console)');
-  });
-
-  QUnit.test('models/option.js', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'models/option.js should pass ESLint\n\n');
+    assert.ok(false, 'controllers/application.js should pass ESLint\n\n5:10 - \'Ember\' is not defined. (no-undef)\n6:9 - \'Ember\' is not defined. (no-undef)\n26:7 - Unexpected console statement. (no-console)\n73:11 - Unexpected console statement. (no-console)\n76:11 - Unexpected console statement. (no-console)\n85:19 - Unexpected console statement. (no-console)\n90:19 - Unexpected console statement. (no-console)\n94:19 - Unexpected console statement. (no-console)\n98:19 - Unexpected console statement. (no-console)\n102:19 - Unexpected console statement. (no-console)');
   });
 
   QUnit.test('resolver.js', function (assert) {
@@ -43,16 +33,6 @@ define('imagina2-print/tests/app.lint-test', [], function () {
   QUnit.test('router.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'router.js should pass ESLint\n\n');
-  });
-
-  QUnit.test('routes/options.js', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'routes/options.js should pass ESLint\n\n');
-  });
-
-  QUnit.test('serializers/application.js', function (assert) {
-    assert.expect(1);
-    assert.ok(true, 'serializers/application.js should pass ESLint\n\n');
   });
 
   QUnit.test('services/opciones.js', function (assert) {
@@ -318,6 +298,21 @@ define('imagina2-print/tests/tests.lint-test', [], function () {
     assert.ok(true, 'unit/adapters/application-test.js should pass ESLint\n\n');
   });
 
+  QUnit.test('unit/adapters/option-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/adapters/option-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('unit/controllers/application-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/controllers/application-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('unit/controllers/print-formulary-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/controllers/print-formulary-test.js should pass ESLint\n\n');
+  });
+
   QUnit.test('unit/initializers/component-store-injector-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/initializers/component-store-injector-test.js should pass ESLint\n\n');
@@ -331,6 +326,11 @@ define('imagina2-print/tests/tests.lint-test', [], function () {
   QUnit.test('unit/routes/options-test.js', function (assert) {
     assert.expect(1);
     assert.ok(true, 'unit/routes/options-test.js should pass ESLint\n\n');
+  });
+
+  QUnit.test('unit/routes/print-formulary-test.js', function (assert) {
+    assert.expect(1);
+    assert.ok(true, 'unit/routes/print-formulary-test.js should pass ESLint\n\n');
   });
 
   QUnit.test('unit/serializers/application-test.js', function (assert) {
@@ -355,6 +355,48 @@ define('imagina2-print/tests/unit/adapters/application-test', ['ember-qunit'], f
   (0, _emberQunit.test)('it exists', function (assert) {
     var adapter = this.subject();
     assert.ok(adapter);
+  });
+});
+define('imagina2-print/tests/unit/adapters/option-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleFor)('adapter:option', 'Unit | Adapter | option', {
+    // Specify the other units that are required for this test.
+    // needs: ['serializer:foo']
+  });
+
+  // Replace this with your real tests.
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var adapter = this.subject();
+    assert.ok(adapter);
+  });
+});
+define('imagina2-print/tests/unit/controllers/application-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleFor)('controller:application', 'Unit | Controller | application', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  // Replace this with your real tests.
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var controller = this.subject();
+    assert.ok(controller);
+  });
+});
+define('imagina2-print/tests/unit/controllers/print-formulary-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleFor)('controller:print-formulary', 'Unit | Controller | print formulary', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  // Replace this with your real tests.
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var controller = this.subject();
+    assert.ok(controller);
   });
 });
 define('imagina2-print/tests/unit/initializers/component-store-injector-test', ['imagina2-print/initializers/component-store-injector', 'qunit', 'imagina2-print/tests/helpers/destroy-app'], function (_componentStoreInjector, _qunit, _destroyApp) {
@@ -404,6 +446,19 @@ define('imagina2-print/tests/unit/routes/options-test', ['ember-qunit'], functio
   'use strict';
 
   (0, _emberQunit.moduleFor)('route:options', 'Unit | Route | options', {
+    // Specify the other units that are required for this test.
+    // needs: ['controller:foo']
+  });
+
+  (0, _emberQunit.test)('it exists', function (assert) {
+    var route = this.subject();
+    assert.ok(route);
+  });
+});
+define('imagina2-print/tests/unit/routes/print-formulary-test', ['ember-qunit'], function (_emberQunit) {
+  'use strict';
+
+  (0, _emberQunit.moduleFor)('route:print-formulary', 'Unit | Route | print formulary', {
     // Specify the other units that are required for this test.
     // needs: ['controller:foo']
   });

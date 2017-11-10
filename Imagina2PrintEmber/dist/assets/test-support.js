@@ -2599,7 +2599,7 @@ Ember.setupForTesting = testing.setupForTesting;
  * Released under the MIT license
  * https://jquery.org/license
  *
- * Date: 2017-10-22T05:12Z
+ * Date: 2017-11-06T00:09Z
  */
 (function (global$1) {
   'use strict';

@@ -4,19 +4,26 @@
 #canvas {
 
   border:1px solid #d3d3d3;
+  background-color: white;
 
 }
 
 .modal-body{
   font-size: 1.2em;
 }
-#title {
-  margin-left: 40%;
-  margin-bottom: 20px;
+.espaciado{
+
+  margin-bottom: 2%;
+}
+.espacioArriba{
+  margin-top: 2%;
 }
 
 #drag-and-drop {
   margin: auto;
-  margin-left: 200px;
-  margin-right: 200px
+  margin-left: 33%;
+  margin-right: 33%;
+}
+.panel{
+    background-color:#5bc0de !important;
 }

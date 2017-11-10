@@ -10,9 +10,9 @@ var bodyParser     = require('body-parser');
 // set our port
 var port = process.env.PORT || 3000;
 
-// set up mongoose, assume locally installed
-//var mongoose   = require('mongoose');
-//mongoose.connect('mongodb://localhost/RESTServer');
+//set up mongoose, assume locally installed
+var mongoose   = require('mongoose');
+mongoose.connect('mongodb://localhost/RESTServer');
 
 // set the static files location for our Ember application
 app.use(express.static(__dirname + '/public'));

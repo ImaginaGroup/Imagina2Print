@@ -2,14 +2,6 @@
 
 
 
-define('imagina2-print/adapters/application', ['exports', 'ember-data'], function (exports, _emberData) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = _emberData.default.RESTAdapter.extend({});
-});
 define('imagina2-print/app', ['exports', 'imagina2-print/resolver', 'ember-load-initializers', 'imagina2-print/config/environment'], function (exports, _resolver, _emberLoadInitializers, _environment) {
   'use strict';
 
@@ -336,17 +328,44 @@ define('imagina2-print/components/preview-template', ['exports', 'ui-dropzone/co
     }
   });
 });
-define('imagina2-print/components/print-formulary', ['exports'], function (exports) {
+define('imagina2-print/components/tether-dialog', ['exports', 'ember-modal-dialog/components/deprecated-tether-dialog'], function (exports, _deprecatedTetherDialog) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  var Component = Ember.Component;
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _deprecatedTetherDialog.default;
+    }
+  });
+});
+define('imagina2-print/components/welcome-page', ['exports', 'ember-welcome-page/components/welcome-page'], function (exports, _welcomePage) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  Object.defineProperty(exports, 'default', {
+    enumerable: true,
+    get: function () {
+      return _welcomePage.default;
+    }
+  });
+});
+define('imagina2-print/controllers/application', ['exports'], function (exports) {
+  'use strict';
+
+  Object.defineProperty(exports, "__esModule", {
+    value: true
+  });
+  var Controller = Ember.Controller;
   var service = Ember.inject.service;
-  exports.default = Component.extend({
+  exports.default = Controller.extend({
     opciones1: service('opciones'),
     store: Ember.inject.service(),
+    ajax: Ember.inject.service(),
     isShowingModal: false,
     respuesta: [],
     actions: {
@@ -365,8 +384,27 @@ define('imagina2-print/components/print-formulary', ['exports'], function (expor
         this.send('guardarEstado');
         this.send('comprobarDisponibilidad');
       },
-      guardarEstado: function guardarEstado() {},
-      comprobarDisponibilidad: function comprobarDisponibilidad() {
+      save: function save() {
+        console.log('he entrado en la función');
+        var colorForm = document.getElementById('color').value;
+        var tamanoForm = document.getElementById('tamano').value;
+        var configuracionForm = document.getElementById('configuracion').value;
+        var margenesForm = document.getElementById('margenes').value;
+        var options = {
+          color: colorForm,
+          tamano: tamanoForm,
+          configuracion: configuracionForm,
+          margenes: margenesForm
+        };
+
+        this.get('ajax').request('/options', {
+          method: 'POST',
+          data: {
+            options: options
+          }
+        });
+
+        // simulación imprimir
 
         HTMLElement.prototype.hasClass = function (className) {
           var rgx = new RegExp('(\\s|^)' + className + '(\\s|$)');
@@ -443,33 +481,10 @@ define('imagina2-print/components/print-formulary', ['exports'], function (expor
             document.getElementsByClassName('progress-bar')[0].removeClass('active');
           }, 1000);
         }
+
+        //fin simulación imprimir
+
       }
-    }
-  });
-});
-define('imagina2-print/components/tether-dialog', ['exports', 'ember-modal-dialog/components/deprecated-tether-dialog'], function (exports, _deprecatedTetherDialog) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function () {
-      return _deprecatedTetherDialog.default;
-    }
-  });
-});
-define('imagina2-print/components/welcome-page', ['exports', 'ember-welcome-page/components/welcome-page'], function (exports, _welcomePage) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  Object.defineProperty(exports, 'default', {
-    enumerable: true,
-    get: function () {
-      return _welcomePage.default;
     }
   });
 });
@@ -694,19 +709,6 @@ define("imagina2-print/instance-initializers/ember-data", ["exports", "ember-dat
     initialize: _initializeStoreService.default
   };
 });
-define('imagina2-print/models/option', ['exports', 'ember-data'], function (exports, _emberData) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = _emberData.default.Model.extend({
-    color: _emberData.default.attr('string'),
-    tamano: _emberData.default.attr('string'),
-    configuracion: _emberData.default.attr('string'),
-    margenes: _emberData.default.attr('string')
-  });
-});
 define('imagina2-print/resolver', ['exports', 'ember-resolver'], function (exports, _emberResolver) {
   'use strict';
 
@@ -729,37 +731,9 @@ define('imagina2-print/router', ['exports', 'imagina2-print/config/environment']
     rootURL: _environment.default.rootURL
   });
 
-  Router.map(function () {
-    this.route('options');
-  });
+  Router.map(function () {});
 
   exports.default = Router;
-});
-define('imagina2-print/routes/options', ['exports'], function (exports) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  var Route = Ember.Route;
-  exports.default = Route.extend({
-    model: function model() {
-      return this.get('store').findAll('option');
-    }
-  });
-});
-define('imagina2-print/serializers/application', ['exports', 'ember-data'], function (exports, _emberData) {
-  'use strict';
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = _emberData.default.JSONAPISerializer.extend({
-    primaryKey: '_id',
-    serializeId: function serializeId(id) {
-      return id.toString();
-    }
-  });
 });
 define('imagina2-print/services/ajax', ['exports', 'ember-ajax/services/ajax'], function (exports, _ajax) {
   'use strict';
@@ -829,7 +803,7 @@ define("imagina2-print/templates/application", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "ktA7FQGg", "block": "{\"symbols\":[],\"statements\":[[2,\" Latest compiled and minified CSS \"],[0,\"\\n\"],[6,\"link\"],[9,\"rel\",\"stylesheet\"],[9,\"href\",\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"],[7],[8],[0,\"\\n\\n\"],[2,\" jQuery library \"],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"],[7],[8],[0,\"\\n\\n\"],[2,\" Latest compiled JavaScript \"],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"],[7],[8],[0,\"\\n\\n\"],[1,[18,\"componente-nuevo\"],false],[0,\"\\n\\n\"],[0,\"\\n\"],[1,[18,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/application.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "nlmy2cWH", "block": "{\"symbols\":[],\"statements\":[[2,\" Latest compiled and minified CSS \"],[0,\"\\n\"],[6,\"link\"],[9,\"rel\",\"stylesheet\"],[9,\"href\",\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"],[7],[8],[0,\"\\n\\n\"],[2,\" jQuery library \"],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"],[7],[8],[0,\"\\n\\n\"],[2,\" Latest compiled JavaScript \"],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"],[7],[8],[0,\"\\n\"],[6,\"nav\"],[7],[0,\"\\n\\n  \"],[6,\"h1\"],[9,\"class\",\"text-center espaciado\"],[7],[0,\"Imagina2Print\"],[8],[0,\"\\n  \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n\\n\\n  \"],[6,\"div\"],[9,\"class\",\"panel panel-primary\"],[7],[0,\"\\n\\n\\n  \"],[1,[25,\"drag-and-drop\",null,[[\"class\"],[\"espaciado espacioArriba\"]]],false],[0,\"\\n\\n  \"],[6,\"div\"],[9,\"class\",\"text-center espaciado\"],[7],[0,\"\\n    \"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-default btn-lg\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal\"],[3,\"action\",[[19,0,[]],\"hacerPeticion\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n  \"],[8],[0,\"\\n  \"],[6,\"div\"],[9,\"id\",\"myModal\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n      \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n\\n          \"],[6,\"div\"],[9,\"class\",\"modal-body\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"text-center col-sm-6\"],[7],[0,\"\\n                \"],[6,\"h2\"],[7],[0,\"Imprimir\"],[8],[0,\"\\n              \"],[8],[0,\"\\n            \"],[8],[0,\"\\n          \"],[8],[0,\"\\n\\n            \"],[6,\"div\"],[9,\"class\",\"modal-header\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n              \"],[6,\"form\"],[9,\"class\",\"form-horizontal \"],[9,\"action\",\"/action_page.php\"],[7],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Color:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"color\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"1\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"0\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Tamaño:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"tamano\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"0\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"1\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Config:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"configuracion\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"configuracion\",\"0\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"configuracion\",\"1\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Márgenes:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"margenes\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"0\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"1\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group col-sm-6 text-center\"],[7],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"\"],[7],[0,\"\\n\\n                    \"],[6,\"button\"],[9,\"type\",\"submit\"],[9,\"class\",\"btn btn-default \"],[9,\"data-dismiss\",\"modal\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal2\"],[3,\"action\",[[19,0,[]],\"save\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n\\n\\n              \"],[8],[0,\"\\n            \"],[8],[0,\"\\n\\n\\n\\n\\n\\n        \"],[8],[0,\"\\n      \"],[8],[0,\"\\n    \"],[8],[0,\"\\n  \"],[8],[0,\"\\n  \"],[6,\"div\"],[9,\"id\",\"myModal2\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n      \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"header\"],[7],[0,\"\\n\\n        \"],[8],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"modal-body\"],[7],[0,\"\\n\\n            \"],[6,\"div\"],[9,\"class\",\"progress\"],[9,\"style\",\"display: none;\"],[7],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"progress-bar progress-bar-striped active\"],[9,\"role\",\"progressbar\"],[9,\"aria-valuenow\",\"70\"],[9,\"style\",\"width: 70%;\"],[9,\"aria-valuemin\",\"0\"],[9,\"aria-valuemax\",\"100\"],[7],[0,\"\\n\\n              \"],[8],[0,\"\\n            \"],[8],[0,\"\\n\\n        \"],[8],[0,\"\\n      \"],[8],[0,\"\\n    \"],[8],[0,\"\\n\\n  \"],[8],[0,\"\\n\\n\\n  \"],[1,[18,\"canvas-component\"],false],[0,\"\\n  \"],[8],[0,\"\\n  \"],[8],[0,\"\\n\"],[8],[0,\"\\n\\n\\n\"],[0,\"\\n\"],[1,[18,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/application.hbs" } });
 });
 define("imagina2-print/templates/components/canvas-component", ["exports"], function (exports) {
   "use strict";
@@ -837,15 +811,7 @@ define("imagina2-print/templates/components/canvas-component", ["exports"], func
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "iuRNCyz1", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"canvas\"],[9,\"id\",\"canvas\"],[7],[0,\"\\n    Sorry, your browser doesn't support the <canvas> element.\\n\"],[8],[0,\"\\n\"],[6,\"div\"],[7],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarSinColor\"]],[7],[0,\"Blanco y negro\"],[8],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarAColor\"]],[7],[0,\"Color\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/canvas-component.hbs" } });
-});
-define("imagina2-print/templates/components/componente-nuevo", ["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = Ember.HTMLBars.template({ "id": "+kOitXDc", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"nav\"],[7],[0,\"\\n  \"],[6,\"h1\"],[9,\"id\",\"title\"],[7],[0,\"Imagina2Print\"],[8],[0,\"\\n  \"],[1,[18,\"drag-and-drop\"],false],[0,\"\\n  \"],[1,[18,\"print-formulary\"],false],[0,\"\\n  \"],[1,[18,\"canvas-component\"],false],[0,\"\\n\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/componente-nuevo.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "KS6fS7qL", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[9,\"class\",\"text-center\"],[7],[0,\"\\n\"],[6,\"canvas\"],[9,\"id\",\"canvas\"],[9,\"class\",\"espaciado\"],[7],[0,\"\\n    Sorry, your browser doesn't support the <canvas> element.\\n\"],[8],[0,\"\\n\"],[6,\"div\"],[9,\"class\",\"espaciado\"],[7],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-default btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarSinColor\"]],[7],[0,\"Blanco y negro\"],[8],[0,\"\\n\"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-default btn-lg\"],[3,\"action\",[[19,0,[]],\"cambiarAColor\"]],[7],[0,\"Color\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/canvas-component.hbs" } });
 });
 define("imagina2-print/templates/components/drag-and-drop", ["exports"], function (exports) {
   "use strict";
@@ -871,22 +837,6 @@ define("imagina2-print/templates/components/ember-combobox", ["exports"], functi
   });
   exports.default = Ember.HTMLBars.template({ "id": "8AT8YJe7", "block": "{\"symbols\":[],\"statements\":[[1,[25,\"ember-combobox-input\",null,[[\"disabled\",\"value\",\"aria-label\",\"placeholder\"],[[20,[\"disabled\"]],[20,[\"inputValue\"]],[20,[\"placeholder\"]],[20,[\"placeholder\"]]]]],false],[0,\"\\n\\n\"],[4,\"ember-combobox-toggle\",null,[[\"disabled\"],[[20,[\"disabled\"]]]],{\"statements\":[[0,\"▾\"]],\"parameters\":[]},null],[0,\"\\n\\n\"],[4,\"ember-combobox-list\",null,null,{\"statements\":[[4,\"each\",[[20,[\"item\"]],[20,[\"in\"]],[20,[\"dataSource\"]]],null,{\"statements\":[[0,\"        \"],[1,[25,\"ember-combobox-option\",null,[[\"item\",\"optionValuePath\",\"optionLabelPath\"],[[20,[\"item\"]],[20,[\"optionValuePath\"]],[20,[\"optionLabelPath\"]]]]],false],[0,\"\\n\"]],\"parameters\":[]},null]],\"parameters\":[]},null]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/ember-combobox.hbs" } });
 });
-define("imagina2-print/templates/components/print-formulary", ["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = Ember.HTMLBars.template({ "id": "oDUPCtbb", "block": "{\"symbols\":[\"&default\"],\"statements\":[[11,1],[0,\"\\n\"],[6,\"div\"],[9,\"class\",\"text-center\"],[7],[0,\"\\n  \"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-info btn-lg\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal\"],[3,\"action\",[[19,0,[]],\"hacerPeticion\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[6,\"div\"],[9,\"id\",\"myModal\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n  \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n\\n        \"],[6,\"div\"],[9,\"class\",\"modal-body\"],[7],[0,\"\\n          \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"text-center col-sm-6\"],[7],[0,\"\\n              \"],[6,\"h2\"],[7],[0,\"Imprimir\"],[8],[0,\"\\n            \"],[8],[0,\"\\n          \"],[8],[0,\"\\n        \"],[8],[0,\"\\n\\n          \"],[6,\"div\"],[9,\"class\",\"modal-header\"],[7],[0,\"\\n          \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n            \"],[6,\"form\"],[9,\"class\",\"form-horizontal \"],[9,\"action\",\"/action_page.php\"],[7],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Color:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"1\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"0\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Tamaño:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"0\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"1\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Config:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"configuracion\",\"0\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"1\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Márgenes:\"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                  \"],[6,\"select\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"0\"]],false],[8],[0,\"\\n                    \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"1\"]],false],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"form-group col-sm-6 text-center\"],[7],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"\"],[7],[0,\"\\n                  \"],[6,\"button\"],[9,\"type\",\"submit\"],[9,\"class\",\"btn btn-default \"],[9,\"data-dismiss\",\"modal\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal2\"],[3,\"action\",[[19,0,[]],\"print\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n\\n\\n            \"],[8],[0,\"\\n          \"],[8],[0,\"\\n\\n\\n\\n\\n\\n      \"],[8],[0,\"\\n    \"],[8],[0,\"\\n  \"],[8],[0,\"\\n\"],[8],[0,\"\\n\"],[6,\"div\"],[9,\"id\",\"myModal2\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n  \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n      \"],[6,\"div\"],[9,\"class\",\"header\"],[7],[0,\"\\n\\n      \"],[8],[0,\"\\n      \"],[6,\"div\"],[9,\"class\",\"modal-body\"],[7],[0,\"\\n\\n          \"],[6,\"div\"],[9,\"class\",\"progress\"],[9,\"style\",\"display: none;\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"progress-bar progress-bar-striped active\"],[9,\"role\",\"progressbar\"],[9,\"aria-valuenow\",\"70\"],[9,\"style\",\"width: 70%;\"],[9,\"aria-valuemin\",\"0\"],[9,\"aria-valuemax\",\"100\"],[7],[0,\"\\n\\n            \"],[8],[0,\"\\n          \"],[8],[0,\"\\n\\n      \"],[8],[0,\"\\n    \"],[8],[0,\"\\n  \"],[8],[0,\"\\n\\n\"],[8],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/components/print-formulary.hbs" } });
-});
-define("imagina2-print/templates/options", ["exports"], function (exports) {
-  "use strict";
-
-  Object.defineProperty(exports, "__esModule", {
-    value: true
-  });
-  exports.default = Ember.HTMLBars.template({ "id": "uCemZshL", "block": "{\"symbols\":[\"item\"],\"statements\":[[1,[18,\"outlet\"],false],[0,\"\\nOpciones!\\n\"],[4,\"each\",[[20,[\"model\"]]],null,{\"statements\":[[0,\"Color: \"],[1,[19,1,[\"color\"]],false],[6,\"br\"],[7],[8],[0,\"\\nTamaño: \"],[1,[19,1,[\"tamano\"]],false],[6,\"br\"],[7],[8],[0,\"\\n\\n\"]],\"parameters\":[1]},null]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/options.hbs" } });
-});
 
 
 define('imagina2-print/config/environment', [], function() {
@@ -909,6 +859,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("imagina2-print/app")["default"].create({"name":"imagina2-print","version":"0.0.0+34d87241"});
+  require("imagina2-print/app")["default"].create({"name":"imagina2-print","version":"0.0.0+4e6ccdb8"});
 }
 //# sourceMappingURL=imagina2-print.map

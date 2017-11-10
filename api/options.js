@@ -1,7 +1,7 @@
 // api/quote.js
 
 var Options = require('../models/option');
-
+i=0
 module.exports.getAllOptions = function(req, res) {
     Options.find(function(err, options) {
         if (err) {
@@ -13,11 +13,20 @@ module.exports.getAllOptions = function(req, res) {
 
 module.exports.addOptions = function(req,res) {
     var options = new Options(req.body.options);
-    options.save(function(err) {
+    console.log('Opciones'+options);
+    options.save(function(err,options) {
         if (err) {
             res.send(err);
 
         }
-        res.send({data:options});
+
+        res.send({
+
+          
+            options:options
+
+
+        });
+
     });
 };

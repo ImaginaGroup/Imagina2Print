@@ -1,8 +1,9 @@
-import Component from '@ember/component';
+import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
-export default Component.extend({
+export default Controller.extend({
   opciones1: service('opciones'),
   store: Ember.inject.service(),
+  ajax: Ember.inject.service(),
   isShowingModal: false,
   respuesta: [],
   actions: {
@@ -21,10 +22,29 @@ export default Component.extend({
       this.send('guardarEstado');
       this.send('comprobarDisponibilidad');
     },
-    guardarEstado() {
+    save(){
+      console.log('he entrado en la función');
+      var colorForm=document.getElementById('color').value;
+      var tamanoForm=document.getElementById('tamano').value;
+      var configuracionForm=document.getElementById('configuracion').value;
+      var margenesForm=document.getElementById('margenes').value;
+      var options={
+        color: colorForm,
+        tamano: tamanoForm,
+        configuracion: configuracionForm,
+        margenes: margenesForm
+      }
 
-    },
-    comprobarDisponibilidad() {
+
+      this.get('ajax').request('/options', {
+        method: 'POST',
+        data: {
+          options: options
+        }
+      });
+
+
+      // simulación imprimir
 
       HTMLElement.prototype.hasClass = function ( className ) {
         var rgx = new RegExp('(\\s|^)' + className + '(\\s|$)');
@@ -38,9 +58,9 @@ export default Component.extend({
         }
       };
       HTMLElement.prototype.addClass = function( className ) {
-      if (!this.hasClass(className))
+        if (!this.hasClass(className))
         this.className += " " + className;
-  };
+      };
       document.getElementsByClassName('progress')[0].style.display="block"
       document.getElementsByClassName('progress-bar')[0].style.width=0+"%";
       document.getElementsByClassName('progress-bar')[0].innerText="";
@@ -99,6 +119,14 @@ export default Component.extend({
           document.getElementsByClassName('progress-bar')[0].removeClass('active')
         },1000)
       }
+
+
+
+      //fin simulación imprimir
+
+
+
+
 
     }
   }

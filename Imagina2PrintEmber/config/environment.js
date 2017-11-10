@@ -26,6 +26,7 @@ module.exports = function(environment) {
      'connect-src' : "'self' http://localhost:3000"
 }
   };
+  
 
   if (environment === 'development') {
     // ENV.APP.LOG_RESOLVER = true;
