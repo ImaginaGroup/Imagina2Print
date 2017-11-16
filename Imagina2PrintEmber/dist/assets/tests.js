@@ -12,7 +12,7 @@ define('imagina2-print/tests/app.lint-test', [], function () {
 
   QUnit.test('components/canvas-component.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/canvas-component.js should pass ESLint\n\n14:7 - Unexpected console statement. (no-console)');
+    assert.ok(true, 'components/canvas-component.js should pass ESLint\n\n');
   });
 
   QUnit.test('components/drag-and-drop.js', function (assert) {
@@ -22,7 +22,7 @@ define('imagina2-print/tests/app.lint-test', [], function () {
 
   QUnit.test('controllers/application.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/application.js should pass ESLint\n\n5:10 - \'Ember\' is not defined. (no-undef)\n6:9 - \'Ember\' is not defined. (no-undef)\n26:7 - Unexpected console statement. (no-console)\n73:11 - Unexpected console statement. (no-console)\n76:11 - Unexpected console statement. (no-console)\n85:19 - Unexpected console statement. (no-console)\n90:19 - Unexpected console statement. (no-console)\n94:19 - Unexpected console statement. (no-console)\n98:19 - Unexpected console statement. (no-console)\n102:19 - Unexpected console statement. (no-console)');
+    assert.ok(false, 'controllers/application.js should pass ESLint\n\n82:11 - \'imprimiendo\' is assigned a value but never used. (no-unused-vars)');
   });
 
   QUnit.test('resolver.js', function (assert) {

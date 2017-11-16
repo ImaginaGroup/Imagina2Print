@@ -1,33 +1,27 @@
 import Controller from '@ember/controller';
 import { inject as service } from '@ember/service';
+import Ember from 'ember';
 export default Controller.extend({
-  opciones1: service('opciones'),
-  store: Ember.inject.service(),
+  opciones: service('opciones'),
   ajax: Ember.inject.service(),
   isShowingModal: false,
   respuesta: [],
   actions: {
     hacerPeticion(){
-      var resultado =this.get('opciones1').items;
+      var resultado =this.get('opciones').items;
       this.set('respuesta', resultado);
-      this.send('showModalDialog');
     },
-    showModalDialog() {
-      this.set('isShowingModal', true)
-    },
-    closeModalDialog() {
-      this.set('isShowingModal', false)
-    },
-    print() {
-      this.send('guardarEstado');
-      this.send('comprobarDisponibilidad');
-    },
+
     save(){
-      console.log('he entrado en la función');
+      //GUARDAR DATOS
+
+      //obtenemos los valores del formulario
+
       var colorForm=document.getElementById('color').value;
       var tamanoForm=document.getElementById('tamano').value;
       var configuracionForm=document.getElementById('configuracion').value;
       var margenesForm=document.getElementById('margenes').value;
+      //introducimos los valores del formulario en un objeto JSON opciones
       var options={
         color: colorForm,
         tamano: tamanoForm,
@@ -35,7 +29,9 @@ export default Controller.extend({
         margenes: margenesForm
       }
 
-
+      //inyectando previamente el plugin ember-ajax
+      /*mediante este plugin hacemos una petición post a /options
+      pasando como parámetros opciones*/
       this.get('ajax').request('/options', {
         method: 'POST',
         data: {
@@ -43,9 +39,12 @@ export default Controller.extend({
         }
       });
 
+      //FIN GUARDAR DATOS
 
-      // simulación imprimir
+      // SIMULACIÓN IMPRIMIR
 
+      /*modulo javascript para añadir una propiedad permita añadir
+       y quitar clases a elementos con mas de una clase*/
       HTMLElement.prototype.hasClass = function ( className ) {
         var rgx = new RegExp('(\\s|^)' + className + '(\\s|$)');
         var match = this.className.match( rgx );
@@ -61,57 +60,65 @@ export default Controller.extend({
         if (!this.hasClass(className))
         this.className += " " + className;
       };
+      //fin modulo
+
+      //motrar barra de impresión
       document.getElementsByClassName('progress')[0].style.display="block"
+      //inicializar a 0 barra de impresión
       document.getElementsByClassName('progress-bar')[0].style.width=0+"%";
+      //borrar texto de la barra de impresión
       document.getElementsByClassName('progress-bar')[0].innerText="";
+      //cambiar a color cargando de la barra de impresión
       document.getElementsByClassName('progress-bar')[0].style.backgroundColor="#337ab7";
+      //añadir ánimación de lineas de la barra de impresión
       document.getElementsByClassName('progress-bar')[0].addClass("active");
+
+      //INICIO SIMULACIÓN
+
+      //valor que definirá la división de los porcentajes de la barra
       var valor= 1;
+      /*valor que define si esta imprimiendo o no (esta variable de momento no se
+    utiliza por lo que aparecera un error en la consola avisando de esto)*/
       var imprimiendo=false;
-      var myVar2 = setInterval(function(){
-        if (imprimiendo==true) {
-          console.log("ocupado");
-        }
-        if (imprimiendo==false) {
-          console.log("Listo para imprimir");
-        }
-      },3000);
+
+      /*función que se llama cada 2 segundos para simular la impresión
+       aumentado el porcentaje de la barra dependiendo del valor de la división*/
       var myVar= setInterval(function(){
 
 
         imprimiendo=true;
 
         switch (valor) {
-          case 1: console.log("Imprimiendo... 1");
+          case 1:
           document.getElementsByClassName('progress-bar')[0].style.width=20+"%";
           document.getElementsByClassName('progress-bar')[0].innerText="Imprimiendo";
           valor=2;
           break;
-          case 2: console.log("Imprimiendo... 2");
+          case 2:
           document.getElementsByClassName('progress-bar')[0].style.width=40+"%";
           valor=3;
           break;
-          case 3: console.log("Imprimiendo... 3");
+          case 3:
           document.getElementsByClassName('progress-bar')[0].style.width=60+"%";
           valor=4
           break;
-          case 4: console.log("Imprimiendo... 3");
+          case 4:
           document.getElementsByClassName('progress-bar')[0].style.width=80+"%";
           valor=5
           break;
-          case 5: console.log("Imprimiendo... 3");
+          case 5:
           document.getElementsByClassName('progress-bar')[0].style.width=100+"%";
           pararImpresion();
           break;
-
         }
-
       }, 2000);
 
+      /*función que finaliza la impresión, para la simulación y
+       después de un segundo cambia el estilo de la barra*/
       function pararImpresion() {
         imprimiendo=false
         clearInterval(myVar);
-        clearInterval(myVar2);
+
         setTimeout(function () {
           document.getElementsByClassName('progress-bar')[0].style.backgroundColor="#6ae24f";
           document.getElementsByClassName('progress-bar')[0].innerText="Documento impreso"
@@ -119,8 +126,6 @@ export default Controller.extend({
           document.getElementsByClassName('progress-bar')[0].removeClass('active')
         },1000)
       }
-
-
 
       //fin simulación imprimir
 

@@ -11,7 +11,7 @@ export default Component.extend({
       var ctx=canvas.getContext("2d");
       imagen = ctx.getImageData(0, 0, canvas.width, canvas.height);
       var imgPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-      console.log(imgPixels);
+      
       for(var y = 0; y < imgPixels.height; y++){
         for(var x = 0; x < imgPixels.width; x++){
           var i = (y * 4) * imgPixels.width + x * 4;

@@ -1,32 +1,12 @@
-// api/quote.js
-
+// api/options.js
+//se importa el modelo options de la base de datos
 var Options = require('../models/option');
-i=0
-module.exports.getAllOptions = function(req, res) {
-    Options.find(function(err, options) {
-        if (err) {
-            res.send(err);
-        }
-        res.send({data: options});
-    });
-};
+
 
 module.exports.addOptions = function(req,res) {
+  //se crea el registro del modelo con los parámetros pasados por la petición
     var options = new Options(req.body.options);
     console.log('Opciones'+options);
-    options.save(function(err,options) {
-        if (err) {
-            res.send(err);
-
-        }
-
-        res.send({
-
-          
-            options:options
-
-
-        });
-
-    });
+    //Y se guardan en la base de datos
+    options.save()
 };

@@ -3,9 +3,9 @@
 	"file": "imagina2-print.css",
 	"sourceRoot": "/Users/raul/Documents/ProyectoNodeEmber/Imagina2Print/Imagina2PrintEmber/app/styles",
 	"sources": [
-		"../../sass_compiler-input_base_path-CcUXdnMW.tmp/app/styles/app.scss",
-		"../../sass_compiler-input_base_path-CcUXdnMW.tmp/app/styles/ember-modal-dialog/ember-modal-structure.scss",
-		"../../sass_compiler-input_base_path-CcUXdnMW.tmp/app/styles/ember-modal-dialog/ember-modal-appearance.scss"
+		"../../sass_compiler-input_base_path-KvGoCTuw.tmp/app/styles/app.scss",
+		"../../sass_compiler-input_base_path-KvGoCTuw.tmp/app/styles/ember-modal-dialog/ember-modal-structure.scss",
+		"../../sass_compiler-input_base_path-KvGoCTuw.tmp/app/styles/ember-modal-dialog/ember-modal-appearance.scss"
 	],
 	"sourcesContent": [
 		"@import \"ember-modal-dialog/ember-modal-structure\";\n@import \"ember-modal-dialog/ember-modal-appearance\";\n\n#canvas {\n\n  border:1px solid #d3d3d3;\n  background-color: white;\n\n}\n\n.modal-body{\n  font-size: 1.2em;\n}\n.espaciado{\n\n  margin-bottom: 2%;\n}\n.espacioArriba{\n  margin-top: 2%;\n}\n\n#drag-and-drop {\n  margin: auto;\n  margin-left: 33%;\n  margin-right: 33%;\n}\n.panel{\n    background-color:#5bc0de !important;\n}\n",

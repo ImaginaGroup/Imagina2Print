@@ -39,7 +39,7 @@ define("imagina2-print/components/canvas-component", ["exports"], function (expo
         var ctx = canvas.getContext("2d");
         imagen = ctx.getImageData(0, 0, canvas.width, canvas.height);
         var imgPixels = ctx.getImageData(0, 0, canvas.width, canvas.height);
-        console.log(imgPixels);
+
         for (var y = 0; y < imgPixels.height; y++) {
           for (var x = 0; x < imgPixels.width; x++) {
             var i = y * 4 * imgPixels.width + x * 4;
@@ -363,49 +363,47 @@ define('imagina2-print/controllers/application', ['exports'], function (exports)
   var Controller = Ember.Controller;
   var service = Ember.inject.service;
   exports.default = Controller.extend({
-    opciones1: service('opciones'),
-    store: Ember.inject.service(),
+    opciones: service('opciones'),
     ajax: Ember.inject.service(),
     isShowingModal: false,
     respuesta: [],
     actions: {
       hacerPeticion: function hacerPeticion() {
-        var resultado = this.get('opciones1').items;
+        var resultado = this.get('opciones').items;
         this.set('respuesta', resultado);
-        this.send('showModalDialog');
-      },
-      showModalDialog: function showModalDialog() {
-        this.set('isShowingModal', true);
-      },
-      closeModalDialog: function closeModalDialog() {
-        this.set('isShowingModal', false);
-      },
-      print: function print() {
-        this.send('guardarEstado');
-        this.send('comprobarDisponibilidad');
       },
       save: function save() {
-        console.log('he entrado en la función');
+        //GUARDAR DATOS
+
+        //obtenemos los valores del formulario
+
         var colorForm = document.getElementById('color').value;
         var tamanoForm = document.getElementById('tamano').value;
         var configuracionForm = document.getElementById('configuracion').value;
         var margenesForm = document.getElementById('margenes').value;
+        //introducimos los valores del formulario en un objeto JSON opciones
         var options = {
           color: colorForm,
           tamano: tamanoForm,
           configuracion: configuracionForm,
           margenes: margenesForm
-        };
 
-        this.get('ajax').request('/options', {
+          //inyectando previamente el plugin ember-ajax
+          /*mediante este plugin hacemos una petición post a /options
+          pasando como parámetros opciones*/
+        };this.get('ajax').request('/options', {
           method: 'POST',
           data: {
             options: options
           }
         });
 
-        // simulación imprimir
+        //FIN GUARDAR DATOS
 
+        // SIMULACIÓN IMPRIMIR
+
+        /*modulo javascript para añadir una propiedad permita añadir
+         y quitar clases a elementos con mas de una clase*/
         HTMLElement.prototype.hasClass = function (className) {
           var rgx = new RegExp('(\\s|^)' + className + '(\\s|$)');
           var match = this.className.match(rgx);
@@ -420,60 +418,64 @@ define('imagina2-print/controllers/application', ['exports'], function (exports)
         HTMLElement.prototype.addClass = function (className) {
           if (!this.hasClass(className)) this.className += " " + className;
         };
+        //fin modulo
+
+        //motrar barra de impresión
         document.getElementsByClassName('progress')[0].style.display = "block";
+        //inicializar a 0 barra de impresión
         document.getElementsByClassName('progress-bar')[0].style.width = 0 + "%";
+        //borrar texto de la barra de impresión
         document.getElementsByClassName('progress-bar')[0].innerText = "";
+        //cambiar a color cargando de la barra de impresión
         document.getElementsByClassName('progress-bar')[0].style.backgroundColor = "#337ab7";
+        //añadir ánimación de lineas de la barra de impresión
         document.getElementsByClassName('progress-bar')[0].addClass("active");
+
+        //INICIO SIMULACIÓN
+
+        //valor que definirá la división de los porcentajes de la barra
         var valor = 1;
+        /*valor que define si esta imprimiendo o no (esta variable de momento no se
+        utiliza por lo que aparecera un error en la consola avisando de esto)*/
         var imprimiendo = false;
-        var myVar2 = setInterval(function () {
-          if (imprimiendo == true) {
-            console.log("ocupado");
-          }
-          if (imprimiendo == false) {
-            console.log("Listo para imprimir");
-          }
-        }, 3000);
+
+        /*función que se llama cada 2 segundos para simular la impresión
+         aumentado el porcentaje de la barra dependiendo del valor de la división*/
         var myVar = setInterval(function () {
 
           imprimiendo = true;
 
           switch (valor) {
             case 1:
-              console.log("Imprimiendo... 1");
               document.getElementsByClassName('progress-bar')[0].style.width = 20 + "%";
               document.getElementsByClassName('progress-bar')[0].innerText = "Imprimiendo";
               valor = 2;
               break;
             case 2:
-              console.log("Imprimiendo... 2");
               document.getElementsByClassName('progress-bar')[0].style.width = 40 + "%";
               valor = 3;
               break;
             case 3:
-              console.log("Imprimiendo... 3");
               document.getElementsByClassName('progress-bar')[0].style.width = 60 + "%";
               valor = 4;
               break;
             case 4:
-              console.log("Imprimiendo... 3");
               document.getElementsByClassName('progress-bar')[0].style.width = 80 + "%";
               valor = 5;
               break;
             case 5:
-              console.log("Imprimiendo... 3");
               document.getElementsByClassName('progress-bar')[0].style.width = 100 + "%";
               pararImpresion();
               break;
-
           }
         }, 2000);
 
+        /*función que finaliza la impresión, para la simulación y
+         después de un segundo cambia el estilo de la barra*/
         function pararImpresion() {
           imprimiendo = false;
           clearInterval(myVar);
-          clearInterval(myVar2);
+
           setTimeout(function () {
             document.getElementsByClassName('progress-bar')[0].style.backgroundColor = "#6ae24f";
             document.getElementsByClassName('progress-bar')[0].innerText = "Documento impreso";
@@ -803,7 +805,7 @@ define("imagina2-print/templates/application", ["exports"], function (exports) {
   Object.defineProperty(exports, "__esModule", {
     value: true
   });
-  exports.default = Ember.HTMLBars.template({ "id": "nlmy2cWH", "block": "{\"symbols\":[],\"statements\":[[2,\" Latest compiled and minified CSS \"],[0,\"\\n\"],[6,\"link\"],[9,\"rel\",\"stylesheet\"],[9,\"href\",\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"],[7],[8],[0,\"\\n\\n\"],[2,\" jQuery library \"],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"],[7],[8],[0,\"\\n\\n\"],[2,\" Latest compiled JavaScript \"],[0,\"\\n\"],[6,\"script\"],[9,\"src\",\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"],[7],[8],[0,\"\\n\"],[6,\"nav\"],[7],[0,\"\\n\\n  \"],[6,\"h1\"],[9,\"class\",\"text-center espaciado\"],[7],[0,\"Imagina2Print\"],[8],[0,\"\\n  \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n\\n\\n  \"],[6,\"div\"],[9,\"class\",\"panel panel-primary\"],[7],[0,\"\\n\\n\\n  \"],[1,[25,\"drag-and-drop\",null,[[\"class\"],[\"espaciado espacioArriba\"]]],false],[0,\"\\n\\n  \"],[6,\"div\"],[9,\"class\",\"text-center espaciado\"],[7],[0,\"\\n    \"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-default btn-lg\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal\"],[3,\"action\",[[19,0,[]],\"hacerPeticion\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n  \"],[8],[0,\"\\n  \"],[6,\"div\"],[9,\"id\",\"myModal\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n      \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n\\n          \"],[6,\"div\"],[9,\"class\",\"modal-body\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"text-center col-sm-6\"],[7],[0,\"\\n                \"],[6,\"h2\"],[7],[0,\"Imprimir\"],[8],[0,\"\\n              \"],[8],[0,\"\\n            \"],[8],[0,\"\\n          \"],[8],[0,\"\\n\\n            \"],[6,\"div\"],[9,\"class\",\"modal-header\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n              \"],[6,\"form\"],[9,\"class\",\"form-horizontal \"],[9,\"action\",\"/action_page.php\"],[7],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Color:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"color\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"1\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"0\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Tamaño:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"tamano\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"0\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"1\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Config:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"configuracion\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"configuracion\",\"0\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"configuracion\",\"1\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Márgenes:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"margenes\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"0\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"1\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group col-sm-6 text-center\"],[7],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"\"],[7],[0,\"\\n\\n                    \"],[6,\"button\"],[9,\"type\",\"submit\"],[9,\"class\",\"btn btn-default \"],[9,\"data-dismiss\",\"modal\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal2\"],[3,\"action\",[[19,0,[]],\"save\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n\\n\\n              \"],[8],[0,\"\\n            \"],[8],[0,\"\\n\\n\\n\\n\\n\\n        \"],[8],[0,\"\\n      \"],[8],[0,\"\\n    \"],[8],[0,\"\\n  \"],[8],[0,\"\\n  \"],[6,\"div\"],[9,\"id\",\"myModal2\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n      \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"header\"],[7],[0,\"\\n\\n        \"],[8],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"modal-body\"],[7],[0,\"\\n\\n            \"],[6,\"div\"],[9,\"class\",\"progress\"],[9,\"style\",\"display: none;\"],[7],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"progress-bar progress-bar-striped active\"],[9,\"role\",\"progressbar\"],[9,\"aria-valuenow\",\"70\"],[9,\"style\",\"width: 70%;\"],[9,\"aria-valuemin\",\"0\"],[9,\"aria-valuemax\",\"100\"],[7],[0,\"\\n\\n              \"],[8],[0,\"\\n            \"],[8],[0,\"\\n\\n        \"],[8],[0,\"\\n      \"],[8],[0,\"\\n    \"],[8],[0,\"\\n\\n  \"],[8],[0,\"\\n\\n\\n  \"],[1,[18,\"canvas-component\"],false],[0,\"\\n  \"],[8],[0,\"\\n  \"],[8],[0,\"\\n\"],[8],[0,\"\\n\\n\\n\"],[0,\"\\n\"],[1,[18,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/application.hbs" } });
+  exports.default = Ember.HTMLBars.template({ "id": "jzT03ixy", "block": "{\"symbols\":[],\"statements\":[[0,\"\\n\"],[6,\"link\"],[9,\"rel\",\"stylesheet\"],[9,\"href\",\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css\"],[7],[8],[0,\"\\n\\n\"],[6,\"script\"],[9,\"src\",\"https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js\"],[7],[8],[0,\"\\n\\n\"],[6,\"script\"],[9,\"src\",\"https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js\"],[7],[8],[0,\"\\n\"],[6,\"nav\"],[7],[0,\"\\n\\n  \"],[6,\"h1\"],[9,\"class\",\"text-center espaciado\"],[7],[0,\"Imagina2Print\"],[8],[0,\"\\n  \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n\\n\\n  \"],[6,\"div\"],[9,\"class\",\"panel panel-primary\"],[7],[0,\"\\n\\n\\n  \"],[1,[25,\"drag-and-drop\",null,[[\"class\"],[\"espaciado espacioArriba\"]]],false],[0,\"\\n\\n  \"],[6,\"div\"],[9,\"class\",\"text-center espaciado\"],[7],[0,\"\\n    \"],[6,\"button\"],[9,\"type\",\"button\"],[9,\"class\",\"btn btn-default btn-lg\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal\"],[3,\"action\",[[19,0,[]],\"hacerPeticion\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n  \"],[8],[0,\"\\n  \"],[6,\"div\"],[9,\"id\",\"myModal\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n      \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n          \"],[6,\"div\"],[9,\"class\",\"modal-body\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"text-center col-sm-6\"],[7],[0,\"\\n                \"],[6,\"h2\"],[7],[0,\"Imprimir\"],[8],[0,\"\\n              \"],[8],[0,\"\\n            \"],[8],[0,\"\\n          \"],[8],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"modal-header\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"container\"],[7],[0,\"\\n              \"],[6,\"form\"],[9,\"class\",\"form-horizontal \"],[9,\"action\",\"/action_page.php\"],[7],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Color:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"color\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"1\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"color\",\"0\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Tamaño:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"tamano\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"0\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"tamano\",\"1\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Config:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"configuracion\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"configuracion\",\"0\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"configuracion\",\"1\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group\"],[7],[0,\"\\n                  \"],[6,\"label\"],[9,\"class\",\"control-label col-sm-2\"],[7],[0,\"Márgenes:\"],[8],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"col-sm-3\"],[7],[0,\"\\n                    \"],[6,\"select\"],[9,\"id\",\"margenes\"],[9,\"class\",\"form-control\"],[7],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"0\"]],false],[8],[0,\"\\n                      \"],[6,\"option\"],[7],[1,[20,[\"respuesta\",\"margenes\",\"1\"]],false],[8],[0,\"\\n                    \"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n                \"],[6,\"div\"],[9,\"class\",\"form-group col-sm-6 text-center\"],[7],[0,\"\\n                  \"],[6,\"div\"],[9,\"class\",\"\"],[7],[0,\"\\n                    \"],[6,\"button\"],[9,\"type\",\"submit\"],[9,\"class\",\"btn btn-default \"],[9,\"data-dismiss\",\"modal\"],[9,\"data-toggle\",\"modal\"],[9,\"data-target\",\"#myModal2\"],[3,\"action\",[[19,0,[]],\"save\"]],[7],[0,\"Imprimir\"],[8],[0,\"\\n                  \"],[8],[0,\"\\n                \"],[8],[0,\"\\n              \"],[8],[0,\"\\n            \"],[8],[0,\"\\n        \"],[8],[0,\"\\n      \"],[8],[0,\"\\n    \"],[8],[0,\"\\n  \"],[8],[0,\"\\n  \"],[6,\"div\"],[9,\"id\",\"myModal2\"],[9,\"class\",\"modal fade\"],[9,\"role\",\"dialog\"],[7],[0,\"\\n    \"],[6,\"div\"],[9,\"class\",\"modal-dialog\"],[7],[0,\"\\n      \"],[6,\"div\"],[9,\"class\",\"modal-content\"],[7],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"header\"],[7],[0,\"\\n        \"],[8],[0,\"\\n        \"],[6,\"div\"],[9,\"class\",\"modal-body\"],[7],[0,\"\\n            \"],[6,\"div\"],[9,\"class\",\"progress\"],[9,\"style\",\"display: none;\"],[7],[0,\"\\n              \"],[6,\"div\"],[9,\"class\",\"progress-bar progress-bar-striped active\"],[9,\"role\",\"progressbar\"],[9,\"aria-valuenow\",\"70\"],[9,\"style\",\"width: 70%;\"],[9,\"aria-valuemin\",\"0\"],[9,\"aria-valuemax\",\"100\"],[7],[0,\"\\n              \"],[8],[0,\"\\n            \"],[8],[0,\"\\n        \"],[8],[0,\"\\n      \"],[8],[0,\"\\n    \"],[8],[0,\"\\n  \"],[8],[0,\"\\n\\n\\n  \"],[1,[18,\"canvas-component\"],false],[0,\"\\n  \"],[8],[0,\"\\n  \"],[8],[0,\"\\n\"],[8],[0,\"\\n\\n\\n\"],[0,\"\\n\"],[1,[18,\"outlet\"],false],[0,\"\\n\"]],\"hasEval\":false}", "meta": { "moduleName": "imagina2-print/templates/application.hbs" } });
 });
 define("imagina2-print/templates/components/canvas-component", ["exports"], function (exports) {
   "use strict";
@@ -859,6 +861,6 @@ catch(err) {
 });
 
 if (!runningTests) {
-  require("imagina2-print/app")["default"].create({"name":"imagina2-print","version":"0.0.0+4e6ccdb8"});
+  require("imagina2-print/app")["default"].create({"name":"imagina2-print","version":"0.0.0+f444ecc6"});
 }
 //# sourceMappingURL=imagina2-print.map

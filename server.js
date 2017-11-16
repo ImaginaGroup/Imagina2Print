@@ -17,9 +17,9 @@ mongoose.connect('mongodb://localhost/RESTServer');
 // set the static files location for our Ember application
 app.use(express.static(__dirname + '/public'));
 
-//bodyParser Middleware to allow different encoding requests
+//utilizamos el Middleware bodyParser para permitir diferentes formatos de peticiones
 app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());       // to support JSON-encoded bodies
+app.use(bodyParser.json());       // para soportar cuerpos de formatos JSON
 
 
 //Routes API
