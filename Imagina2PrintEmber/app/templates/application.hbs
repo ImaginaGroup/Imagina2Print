@@ -4,27 +4,31 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
 
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <nav>
 
-  <h1  class="text-center espaciado">Imagina2Print</h1>
+
   <div class="container">
+    <h1  class=" espacioArriba">Imagina2Print</h1>
+    <div class="">
+      <h2 class=" text-center espaciadoTitulo"><span class="glyphicon glyphicon-upload"></span> Sube tu imagen </h2>
+    </div>
 
 
-  <div class="panel panel-primary">
+
+
 
 
   {{drag-and-drop class="espaciado espacioArriba"}}
 
-  <div class="text-center espaciado">
-    <button type="button" class="btn btn-default btn-lg" data-toggle="modal" data-target="#myModal" {{action "hacerPeticion"}}>Imprimir</button>
-  </div>
+
   <div id="myModal" class="modal fade" role="dialog">
     <div class="modal-dialog">
       <div class="modal-content">
           <div class="modal-body">
             <div class="container">
               <div class="text-center col-sm-6">
-                <h2>Imprimir</h2>
+                <h2>Opciones de Impresión</h2>
               </div>
             </div>
           </div>
@@ -69,7 +73,7 @@
                 </div>
                 <div class="form-group col-sm-6 text-center">
                   <div class="">
-                    <button type="submit" class="btn btn-default " data-dismiss="modal" data-toggle="modal" data-target="#myModal2"   {{action 'save'}}>Imprimir</button>
+                    <button type="submit" class="btn btn-info " data-dismiss="modal" data-toggle="modal" data-target="#myModal2"   {{action 'save'}}><span class="glyphicon glyphicon-print"></span> Imprimir</button>
                   </div>
                 </div>
               </form>
@@ -93,8 +97,13 @@
     </div>
   </div>
 
+<h2 class="text-center espaciadoTitulo"><span class="glyphicon glyphicon-camera"></span> Personaliza tu imagen</h2>
 
   {{canvas-component}}
+
+  <div class="text-center espaciado espacioArribaBoton">
+
+    <button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal" {{action "hacerPeticion"}}><span class="glyphicon glyphicon-print"></span> Imprimir</button>
   </div>
   </div>
 </nav>

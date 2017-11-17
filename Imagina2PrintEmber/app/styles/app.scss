@@ -9,14 +9,39 @@
 }
 
 .modal-body{
+  background-color:#ededed!important;
   font-size: 1.2em;
+}
+.modal-content{
+  background-color:#ededed!important;
+  color: #5bc0de !important;
+}
+#canvas{
+  width: 70%;
+}
+.espaciadoTitulo{
+  margin-top: 7%;
+  margin-bottom: 7%;
 }
 .espaciado{
 
+
   margin-bottom: 2%;
+}
+.espacioArribaBoton{
+  margin-top: 5%;
 }
 .espacioArriba{
   margin-top: 2%;
+}
+h1{
+  color:#5bc0de !important;
+}
+h2{
+  color:#5bc0de !important;
+}
+hr{
+  border-top: 1px solid #5bc0de !important;
 }
 
 #drag-and-drop {
@@ -24,6 +49,10 @@
   margin-left: 33%;
   margin-right: 33%;
 }
-.panel{
-    background-color:#5bc0de !important;
+html{
+  background-color:#ededed;
+
+}
+nav{
+  background-color:#ededed;
 }

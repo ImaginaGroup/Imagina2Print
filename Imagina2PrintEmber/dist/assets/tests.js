@@ -17,12 +17,12 @@ define('imagina2-print/tests/app.lint-test', [], function () {
 
   QUnit.test('components/drag-and-drop.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'components/drag-and-drop.js should pass ESLint\n\n7:1 - \'Dropzone\' is not defined. (no-undef)\n25:39 - \'file\' is defined but never used. (no-unused-vars)');
+    assert.ok(true, 'components/drag-and-drop.js should pass ESLint\n\n');
   });
 
   QUnit.test('controllers/application.js', function (assert) {
     assert.expect(1);
-    assert.ok(false, 'controllers/application.js should pass ESLint\n\n82:11 - \'imprimiendo\' is assigned a value but never used. (no-unused-vars)');
+    assert.ok(true, 'controllers/application.js should pass ESLint\n\n');
   });
 
   QUnit.test('resolver.js', function (assert) {
