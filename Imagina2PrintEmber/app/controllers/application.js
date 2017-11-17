@@ -79,14 +79,14 @@ export default Controller.extend({
       var valor= 1;
       /*valor que define si esta imprimiendo o no (esta variable de momento no se
     utiliza por lo que aparecera un error en la consola avisando de esto)*/
-      var imprimiendo=false;
+      //var imprimiendo=false;
 
       /*función que se llama cada 2 segundos para simular la impresión
        aumentado el porcentaje de la barra dependiendo del valor de la división*/
       var myVar= setInterval(function(){
 
 
-        imprimiendo=true;
+        //imprimiendo=true;
 
         switch (valor) {
           case 1:
@@ -116,7 +116,7 @@ export default Controller.extend({
       /*función que finaliza la impresión, para la simulación y
        después de un segundo cambia el estilo de la barra*/
       function pararImpresion() {
-        imprimiendo=false
+        //imprimiendo=false
         clearInterval(myVar);
 
         setTimeout(function () {
